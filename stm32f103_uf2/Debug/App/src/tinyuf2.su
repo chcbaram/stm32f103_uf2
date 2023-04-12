@@ -1,0 +1,7 @@
+../App/src/tinyuf2.c:180:10:tud_hid_get_report_cb	0	static
+../App/src/tinyuf2.c:194:6:tud_hid_set_report_cb	0	static
+../App/src/tinyuf2.c:211:6:indicator_set	8	static
+../App/src/tinyuf2.c:43:5:tinyuf2	8	static
+../App/src/tinyuf2.c:162:6:tud_mount_cb	0	static
+../App/src/tinyuf2.c:168:6:tud_umount_cb	0	static
+../App/src/tinyuf2.c:242:6:board_timer_handler	8	static

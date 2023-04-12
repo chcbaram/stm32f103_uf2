@@ -38,43 +38,44 @@
 #define BOOTLOADER_SECTOR_MASK  0x3UL
 
 /* flash parameters that we should not really know */
-static const uint32_t sector_size[] =
-{
-  // First 4 sectors are for bootloader (64KB)
-  16 * 1024,
-	16 * 1024,
-	16 * 1024,
-	16 * 1024,
-	// Application (BOARD_FLASH_APP_START)
-	64 * 1024,
-	128 * 1024,
-	128 * 1024,
-	128 * 1024,
-
-	// flash sectors only in 1 MB devices
-	128 * 1024,
-	128 * 1024,
-	128 * 1024,
-	128 * 1024,
-
-	// flash sectors only in 2 MB devices
-	16 * 1024,
-	16 * 1024,
-	16 * 1024,
-	16 * 1024,
-	64 * 1024,
-	128 * 1024,
-	128 * 1024,
-	128 * 1024,
-	128 * 1024,
-	128 * 1024,
-	128 * 1024,
-	128 * 1024
-};
+//static const uint32_t sector_size[] =
+//{
+//  // First 4 sectors are for bootloader (64KB)
+//  16 * 1024,
+//	16 * 1024,
+//	16 * 1024,
+//	16 * 1024,
+//	// Application (BOARD_FLASH_APP_START)
+//	64 * 1024,
+//	128 * 1024,
+//	128 * 1024,
+//	128 * 1024,
+//
+//	// flash sectors only in 1 MB devices
+//	128 * 1024,
+//	128 * 1024,
+//	128 * 1024,
+//	128 * 1024,
+//
+//	// flash sectors only in 2 MB devices
+//	16 * 1024,
+//	16 * 1024,
+//	16 * 1024,
+//	16 * 1024,
+//	64 * 1024,
+//	128 * 1024,
+//	128 * 1024,
+//	128 * 1024,
+//	128 * 1024,
+//	128 * 1024,
+//	128 * 1024,
+//	128 * 1024
+//};
 
 enum
 {
-  SECTOR_COUNT = sizeof(sector_size)/sizeof(sector_size[0])
+//  SECTOR_COUNT = sizeof(sector_size)/sizeof(sector_size[0])
+  SECTOR_COUNT = BOARD_FLASH_SECTORS
 };
 
 static uint8_t erased_sectors[SECTOR_COUNT] = { 0 };
@@ -85,7 +86,7 @@ static uint8_t erased_sectors[SECTOR_COUNT] = { 0 };
 
 static inline uint32_t flash_sector_size(uint32_t sector)
 {
-  return sector_size[sector];
+  return 1*1024;
 }
 
 static bool is_blank(uint32_t addr, uint32_t size)
@@ -131,9 +132,18 @@ static bool flash_erase(uint32_t addr)
 
   if ( !erased && !is_blank(sector_addr, size) )
   {
+    FLASH_EraseInitTypeDef init;
+    uint32_t page_error;
+
     TUF2_LOG1("Erase: %08lX size = %lu KB ... ", sector_addr, size / 1024);
-//    FLASH_Erase_Sector(sector, FLASH_VOLTAGE_RANGE_3);
-    FLASH_WaitForLastOperation(HAL_MAX_DELAY);
+
+    init.TypeErase   = FLASH_TYPEERASE_PAGES;
+    init.Banks       = FLASH_BANK_1;
+    init.PageAddress = sector_addr;
+    init.NbPages     = size/1024;
+
+    HAL_FLASHEx_Erase(&init, &page_error);
+
     TUF2_LOG1("OK\r\n");
     TUF2_ASSERT( is_blank(sector_addr, size) );
   }

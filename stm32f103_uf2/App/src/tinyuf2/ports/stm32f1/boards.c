@@ -33,10 +33,17 @@
 
 #define STM32_UUID    ((volatile uint32_t *) UID_BASE)
 
+static void board_usb_reset(uint32_t delay_ms);
+
+static bool is_usb = false;
+
 
 
 void board_init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+
   // disable systick
   board_timer_stop();
 
@@ -46,22 +53,44 @@ void board_init(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
+  // USB Pins
+  // Configure USB DM and DP pins.
+  GPIO_InitStruct.Pin = GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
 }
 
 void board_dfu_init(void)
 {
-  GPIO_InitTypeDef  GPIO_InitStruct;
-
-  // USB Pins
-  // Configure USB DM and DP pins.
-  GPIO_InitStruct.Pin = (GPIO_PIN_11 | GPIO_PIN_12);
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  board_usb_reset(200);
 
   // USB Clock enable
   __HAL_RCC_USB_CLK_ENABLE();
+
+  is_usb = true;
+}
+
+void board_usb_reset(uint32_t delay_ms)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  // USB Pins
+  // Configure USB DM and DP pins.
+  GPIO_InitStruct.Pin = GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
+  delay(delay_ms);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_SET);
+
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 
 void board_reset(void)
@@ -118,12 +147,10 @@ void board_app_jump(void)
   UART_CLOCK_DISABLE();
 #endif
 
+
   __HAL_RCC_GPIOA_CLK_DISABLE();
   __HAL_RCC_GPIOB_CLK_DISABLE();
   __HAL_RCC_GPIOC_CLK_DISABLE();
-#ifdef __HAL_RCC_GPIOD_CLK_DISABLE
-  __HAL_RCC_GPIOD_CLK_DISABLE();
-#endif
 
   HAL_RCC_DeInit();
 

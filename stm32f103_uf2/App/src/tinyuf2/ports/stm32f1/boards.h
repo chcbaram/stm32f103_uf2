@@ -42,7 +42,7 @@
 
 // Flash size of the board
 #define BOARD_FLASH_SIZE      (64 * 1024)
-#define BOARD_FLASH_SECTORS   8
+#define BOARD_FLASH_SECTORS   64
 
 //--------------------------------------------------------------------+
 // USB UF2
@@ -61,10 +61,10 @@
 #define USB_NO_VBUS_PIN   1
 
 // Flash Start Address of Application
-#define BOARD_FLASH_APP_START   0x08001000
+#define BOARD_FLASH_APP_START   0x08004000
 
 // Double Reset tap to enter DFU
-#define TINYUF2_DFU_DOUBLE_TAP  0
+#define TINYUF2_DFU_DOUBLE_TAP  1
 
 // Enable write protection
 #define TINYUF2_PROTECT_BOOTLOADER    0

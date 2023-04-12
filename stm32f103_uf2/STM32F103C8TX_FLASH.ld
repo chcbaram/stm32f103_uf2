@@ -38,13 +38,15 @@ ENTRY(Reset_Handler)
 /* Highest address of the user mode stack */
 _estack = ORIGIN(RAM) + LENGTH(RAM); /* end of "RAM" Ram type memory */
 
+_board_dfu_dbl_tap = _estack;
+
 _Min_Heap_Size = 0x200; /* required amount of heap */
 _Min_Stack_Size = 0x400; /* required amount of stack */
 
 /* Memories definition */
 MEMORY
 {
-  RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 20K
+  RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 20K - 4 /* reserve 4 bytes for double tap */
   FLASH  (rx)     : ORIGIN = 0x08000000,   LENGTH = 15K
   CONFIG (rx)     : ORIGIN = 0x08004000 - 1024, LENGTH = 1024  
 }

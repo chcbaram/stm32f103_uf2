@@ -1,0 +1,4 @@
+../App/src/tinyuf2/src/ghostfat.c:276:6:uf2_init	8	static
+../App/src/tinyuf2/src/ghostfat.c:290:6:padded_memcpy	8	static
+../App/src/tinyuf2/src/ghostfat.c:303:6:uf2_read_block	32	static
+../App/src/tinyuf2/src/ghostfat.c:488:5:uf2_write_block	16	static
