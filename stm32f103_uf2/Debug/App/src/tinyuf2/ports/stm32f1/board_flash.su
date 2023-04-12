@@ -1,7 +1,0 @@
-../App/src/tinyuf2/ports/stm32f1/board_flash.c:186:6:board_flash_init	0	static
-../App/src/tinyuf2/ports/stm32f1/board_flash.c:191:10:board_flash_size	0	static
-../App/src/tinyuf2/ports/stm32f1/board_flash.c:196:6:board_flash_read	0	static
-../App/src/tinyuf2/ports/stm32f1/board_flash.c:201:6:board_flash_flush	0	static
-../App/src/tinyuf2/ports/stm32f1/board_flash.c:206:6:board_flash_write	48	static
-../App/src/tinyuf2/ports/stm32f1/board_flash.c:214:6:board_flash_erase_app	0	static
-../App/src/tinyuf2/ports/stm32f1/board_flash.c:219:6:board_flash_protect_bootloader	40	static

@@ -1,8 +1,0 @@
-../App/src/tinyuf2/src/msc.c:46:6:tud_msc_inquiry_cb	64	static
-../App/src/tinyuf2/src/msc.c:61:6:tud_msc_test_unit_ready_cb	0	static
-../App/src/tinyuf2/src/msc.c:70:9:tud_msc_scsi_cb	8	static
-../App/src/tinyuf2/src/msc.c:113:9:tud_msc_read10_cb	24	static,ignoring_inline_asm
-../App/src/tinyuf2/src/msc.c:137:9:tud_msc_write10_cb	24	static
-../App/src/tinyuf2/src/msc.c:158:6:tud_msc_write10_complete_cb	8	static
-../App/src/tinyuf2/src/msc.c:204:6:tud_msc_capacity_cb	0	static
-../App/src/tinyuf2/src/msc.c:215:6:tud_msc_start_stop_cb	0	static
